@@ -1,8 +1,9 @@
-import React, { Component, useEffect, useRef } from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import { QrReader } from "./QrReader/index";
 import useWindowDimensions from "./useWindowDimensions";
 
 function QrCoder() {
+  const [render, setRender] = useState(false);
   let delay = 100;
   const { height, width } = useWindowDimensions();
   const videoRef = useRef(null);
@@ -33,7 +34,16 @@ function QrCoder() {
 
   return (
     <div>
-      <QrReader />
+      {
+        render ? <QrReader onResult={(result, error) => {
+          if(result != null) {
+            console.log(result.text)
+          }
+        }}/>
+        :
+        <button onClick={() => {setRender(true)}} >Click Me</button>
+      }
+      
 
       {/* <video ref={videoRef} /> */}
 

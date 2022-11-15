@@ -16,7 +16,13 @@ export const QrReader = ({
   onResult,
   videoId,
 }) => {
-  
+  useQrReader({
+    constraints,
+    scanDelay,
+    onResult,
+    videoId,
+  });
+  const [loading, setLoading] = React.useState(true);
   const { height, width } = useWindowDimensions();
   const videoRef = React.useRef(null);
   
@@ -41,15 +47,9 @@ export const QrReader = ({
       })
       .catch((err) => {
         console.log(err);
-      });
+      }).finally();
     };
     
-    useQrReader({
-      constraints,
-      scanDelay,
-      onResult,
-      videoId,
-    });
     
     return (
       <section >
@@ -61,6 +61,7 @@ export const QrReader = ({
           >
         {!!ViewFinder && <ViewFinder />}
         <video
+          preload='none'
           ref={videoRef}
           muted
           id={videoId}
@@ -78,7 +79,7 @@ export const QrReader = ({
 QrReader.displayName = 'QrReader';
 QrReader.defaultProps = {
   video: {
-  
+
   },
   constraints: {
     facingMode: 'environment',
